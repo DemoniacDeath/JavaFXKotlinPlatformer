@@ -12,7 +12,7 @@ class UI(context: GameContext, frame: Rect) : Element(context, frame) {
         super.render(
                 graphics,
                 frame.center,
-                Vector.Zero,
+                Vector(),
                 context.world.camera.originalSize
         )
     }

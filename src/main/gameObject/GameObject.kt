@@ -92,6 +92,6 @@ abstract class GameObject(
     }
 
     fun globalPosition(): Vector {
-        return frame.center + (parent?.globalPosition() ?: Vector.Zero)
+        return frame.center + (parent?.globalPosition() ?: Vector())
     }
 }

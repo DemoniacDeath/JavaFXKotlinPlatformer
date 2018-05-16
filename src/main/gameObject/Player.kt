@@ -47,7 +47,7 @@ class Player (
                 physics?.gravity = physics?.gravity != true
                 if (physics?.gravity != true) {
                     jumped = true
-                    physics?.velocity = Vector.Zero
+                    physics?.velocity = Vector()
                 }
             }
         }
@@ -59,7 +59,7 @@ class Player (
             var sitDown = false
             var moveLeft = false
             var moveRight = false
-            var moveVector = Vector.Zero
+            var moveVector = Vector()
             if (keys.contains(KeyCode.LEFT) ||
                     keys.contains(KeyCode.A)) {
                 moveVector.x -= speed
@@ -76,7 +76,7 @@ class Player (
                 if (physics?.gravity != true) {
                     moveVector.y -= speed
                 } else if (!jumped) {
-                    physics?.velocity?.x = (physics?.velocity?.x?:0.0 - jumpSpeed)
+                    physics?.velocity?.y = ((physics?.velocity?.y ?: 0.0) - jumpSpeed)
                     jumped = true
                 }
             }

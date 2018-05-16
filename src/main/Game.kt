@@ -4,10 +4,8 @@ import javafx.scene.canvas.GraphicsContext
 import javafx.scene.input.KeyCode
 import javafx.scene.paint.Color
 import main.gameObject.Player
-import java.util.*
 import main.gameObject.Solid
-
-
+import java.util.*
 
 class Game(
         size: Size,
@@ -42,8 +40,8 @@ class Game(
         )
         player.speed = 1.3
         player.jumpSpeed = 2.5
-        player?.physics?.gravityForce = gravityForce
-        player?.physics?.gravity = false
+        player.physics?.gravityForce = gravityForce
+        player.physics?.gravity = true
         player.addChild(context.world.camera)
         player.renderObject = RenderObject.fromColor(Color.BLACK)
         context.world.addChild(player)
@@ -117,15 +115,17 @@ class Game(
         context.world.handleKeyboardState(keysPressed)
 
         //TODO?: clean
-        graphics.clearRect(0.0, 0.0, context.windowSize.width, context.windowSize.height)
 
         //TODO: Process physics
+        context.world.processPhysics()
 
         //TODO: Detect collisions
+        context.world.detectCollisions()
 
         //TODO: Animate
 
         //TODO: Render
+        graphics.clearRect(0.0, 0.0, context.windowSize.width, context.windowSize.height)
         context.world.render(graphics)
         context.ui.render(graphics)
     }
