@@ -6,6 +6,8 @@ import main.Rect
 import main.Vector
 
 class UI(context: GameContext, frame: Rect) : Element(context, frame) {
+    var powerBar: Element? = null
+
     fun render(graphics: GraphicsContext) {
         super.render(
                 graphics,

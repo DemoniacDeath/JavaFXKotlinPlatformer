@@ -22,7 +22,7 @@ abstract class GameObject(
     }
 
     open fun keyDown(key: KeyCode) {
-        for (child in children) keyDown(key)
+        for (child in children) child.keyDown(key)
     }
 
     open fun handleEnterCollision(collision: Collision) {}
@@ -67,6 +67,12 @@ abstract class GameObject(
     fun detectCollisions() {
         val allColliders = ArrayList<GameObject>()
         detectCollisions(allColliders)
+        val size = allColliders.size
+        for (i in 0 until size) {
+            for (j in i+1 until size) {
+                allColliders[i].physics?.detectCollisions(allColliders[j].physics)
+            }
+        }
     }
 
     private fun detectCollisions(allColliders: MutableList<GameObject>) {

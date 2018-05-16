@@ -1,3 +1,3 @@
 package main
 
-data class Size(val width: Double, val height: Double)
+data class Size(var width: Double, var height: Double)
