@@ -1,7 +1,5 @@
 package main
 
-import main.gameObject.GameObject
-
 class PhysicsState (val gameObject: GameObject) {
     var velocity: Vector = Vector()
     var gravity: Boolean = false

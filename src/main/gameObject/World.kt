@@ -3,6 +3,7 @@ package main.gameObject
 import javafx.scene.canvas.GraphicsContext
 import javafx.scene.input.KeyCode
 import main.GameContext
+import main.GameObject
 import main.Rect
 
 class World(context: GameContext, frame: Rect) : GameObject(context, frame) {

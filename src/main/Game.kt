@@ -3,6 +3,8 @@ package main
 import javafx.scene.canvas.GraphicsContext
 import javafx.scene.input.KeyCode
 import javafx.scene.paint.Color
+import main.gameObject.Consumable
+import main.gameObject.Frame
 import main.gameObject.Player
 import main.gameObject.Solid
 import java.util.*
@@ -46,6 +48,17 @@ class Game(
         player.renderObject = RenderObject.fromColor(Color.BLACK)
         context.world.addChild(player)
 
+        val frame = Frame(context, Rect(
+                .0, .0,
+                context.world.frame.size.width,
+                context.world.frame.size.height
+        ), gridSquareSize)
+        frame.ceiling.renderObject = RenderObject.fromColor(Color.BLACK)
+        frame.wallLeft.renderObject = RenderObject.fromColor(Color.BLACK)
+        frame.wallRight.renderObject = RenderObject.fromColor(Color.BLACK)
+        frame.floor.renderObject = RenderObject.fromColor(Color.BLACK)
+        context.world.addChild(frame)
+
         val rnd = Random()
         val count = (context.world.frame.size.width * context.world.frame.size.height * itemChance / (gridSquareSize * gridSquareSize)).toInt()
         var powerCount = count / 2
@@ -80,11 +93,10 @@ class Game(
                     gridSquareSize)
 
             if (powerCount > 0) {
-//                val gameObject = Consumable(context, rect)
-//                gameObject.RenderObject = RenderObject.fromColor(Color.GREEN)
-//                context.world.AddChild(gameObject)
+                val gameObject = Consumable(context, rect)
+                gameObject.renderObject = RenderObject.fromColor(Color.GREEN)
+                context.world.addChild(gameObject)
                 powerCount--
-
             } else {
                 val gameObject = Solid(context, rect)
 //                gameObject.renderObject = RenderObject(Properties.Resources.brick)
@@ -115,6 +127,7 @@ class Game(
         context.world.handleKeyboardState(keysPressed)
 
         //TODO?: clean
+        context.world.clean()
 
         //TODO: Process physics
         context.world.processPhysics()

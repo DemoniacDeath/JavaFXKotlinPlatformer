@@ -1,8 +1,7 @@
-package main.gameObject
+package main
 
 import javafx.scene.canvas.GraphicsContext
 import javafx.scene.input.KeyCode
-import main.*
 
 abstract class GameObject(
         val context: GameContext,
