@@ -8,15 +8,15 @@ class Solid(context: GameContext, frame: Rect) : GameObject(context, frame) {
     }
 
     override fun handleEnterCollision(collision: Collision) {
-//        val player = collision.collider
-//        when (player) {
-//            is Player -> {
-//                if (collision.collider.physics?.velocity.y > 5) {
-////HURT HIM!!!
-//        player.DealDamage(Math.Round(collision.Collider.Physics.Velocity.Y * 10) as Int)
-//                }
-//            }
-//        }
+        val player = collision.collider
+        when (player) {
+            is Player -> {
+                val physics = collision.collider.physics
+                if (physics != null && physics.velocity.y > 5) {
+                    player.dealDamage(Math.round(physics.velocity.y * 10).toInt())
+                }
+            }
+        }
     }
 
     override fun handleCollision(collision: Collision) {

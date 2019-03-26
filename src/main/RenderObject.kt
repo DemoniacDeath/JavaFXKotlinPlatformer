@@ -24,10 +24,13 @@ class RenderObject(
                 Vector(-cameraSize.width / 2, -cameraSize.height / 2)
         graphics.drawImage(
                 texture,
-                0.0, 0.0, texture.width, texture.height,
-                Math.round(context.windowSize.width * (renderPosition.x / cameraSize.width)).toDouble(),
+                0.0,
+                0.0,
+                texture.width,
+                texture.height,
+                Math.round(context.windowSize.width * ((renderPosition.x + if (flipped) size.width else 0.0) / cameraSize.width)).toDouble(),
                 Math.round(context.windowSize.height * (renderPosition.y / cameraSize.height)).toDouble(),
-                Math.round(context.windowSize.width * (size.width / cameraSize.width)).toDouble(),
+                Math.round(context.windowSize.width * (size.width / cameraSize.width)).toDouble() * (if (flipped) -1.0 else 1.0),
                 Math.round(context.windowSize.height * (size.height / cameraSize.height)).toDouble()
         )
     }
@@ -37,7 +40,6 @@ class RenderObject(
             val wi = WritableImage(1, 1)
             wi.pixelWriter.setColor(0, 0, color)
             return RenderObject(wi)
-
         }
     }
 }

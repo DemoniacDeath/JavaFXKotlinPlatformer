@@ -29,8 +29,7 @@ abstract class GameObject(
     open fun handleCollision(collision: Collision) {}
 
     fun animate(now: Long) {
-        //TODO
-//        renderObject = animation?.animate(now) ?: renderObject
+        renderObject = animation?.animate(now) ?: renderObject
         for (child in children) child.animate(now)
     }
 

@@ -6,11 +6,11 @@ import main.*
 class Player (
         context: GameContext,
         frame: Rect,
-        val idleAnimation: Animation,
-        val moveAnimation: Animation,
-        val jumpAnimation: Animation,
-        val crouchAnimation: Animation,
-        val crouchMoveAnimation: Animation
+        private val idleAnimation: Animation,
+        private val jumpAnimation: Animation,
+        private val crouchAnimation: Animation,
+        private val crouchMoveAnimation: Animation,
+        private val moveAnimation: Animation
 ): GameObject(context, frame) {
     var speed: Double = 0.0
     var jumpSpeed: Double = 0.0
@@ -32,7 +32,7 @@ class Player (
                 frame.size.height = originalSize.height
             }
         }
-    val originalSize: Size
+    private val originalSize: Size
 
     init {
         physics = PhysicsState(this)
@@ -42,13 +42,11 @@ class Player (
     }
 
     override fun keyDown(key: KeyCode) {
-        when (key) {
-            KeyCode.G -> {
-                physics?.gravity = physics?.gravity != true
-                if (physics?.gravity != true) {
-                    jumped = true
-                    physics?.velocity = Vector()
-                }
+        if (key == KeyCode.G) {
+            physics?.gravity = physics?.gravity != true
+            if (physics?.gravity != true) {
+                jumped = true
+                physics?.velocity = Vector()
             }
         }
         super.keyDown(key)
@@ -59,7 +57,7 @@ class Player (
             var sitDown = false
             var moveLeft = false
             var moveRight = false
-            var moveVector = Vector()
+            val moveVector = Vector()
             if (keys.contains(KeyCode.LEFT) ||
                     keys.contains(KeyCode.A)) {
                 moveVector.x -= speed
@@ -91,16 +89,16 @@ class Player (
             }
             crouched = sitDown
 
-//            if (moveLeft && !moveRight) {
-//                moveAnimation.turnedLeft = true
-//                crouchAnimation.turnedLeft = true
-//                crouchMoveAnimation.turnedLeft = true
-//            }
-//            if (moveRight && !moveLeft) {
-//                moveAnimation.turnedLeft = false
-//                crouchAnimation.turnedLeft = false
-//                crouchMoveAnimation.turnedLeft = false
-//            }
+            if (moveLeft && !moveRight) {
+                moveAnimation.turnedLeft = true
+                crouchAnimation.turnedLeft = true
+                crouchMoveAnimation.turnedLeft = true
+            }
+            if (moveRight && !moveLeft) {
+                moveAnimation.turnedLeft = false
+                crouchAnimation.turnedLeft = false
+                crouchMoveAnimation.turnedLeft = false
+            }
             animation = when {
                 (!moveLeft && !moveRight && !jumped && !crouched) -> idleAnimation
                 (!moveLeft && !moveRight && !jumped && crouched) -> crouchAnimation
@@ -119,7 +117,7 @@ class Player (
         val consumable = collision.collider
         if (consumable is Consumable) {
             power += 1
-//            context.ui.powerBar.value = power/maxPower*100.0
+            context.ui.powerBar.value = power.toDouble()/maxPower.toDouble()*100.0
             consumable.removed = true
             speed += 0.01
             jumpSpeed += 0.01
@@ -146,7 +144,7 @@ class Player (
     fun dealDamage(damage: Int) {
         if (!won) {
             health -= damage
-//            context.ui.healthBar.value = health
+            context.ui.healthBar.value = health.toDouble()
             if (health < 0) {
                 die()
             }

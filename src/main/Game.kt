@@ -1,6 +1,7 @@
 package main
 
 import javafx.scene.canvas.GraphicsContext
+import javafx.scene.image.Image
 import javafx.scene.input.KeyCode
 import javafx.scene.paint.Color
 import main.gameObject.Consumable
@@ -34,11 +35,11 @@ class Game(
                         gridSquareSize,
                         gridSquareSize * 2
                 ),
-                Animation(),
-                Animation(),
-                Animation(),
-                Animation(),
-                Animation()
+                Animation.withSingleRenderObject(RenderObject(Image("/img/idle.png"))),
+                Animation.withSingleRenderObject(RenderObject(Image("/img/jump.png"))),
+                Animation.withSingleRenderObject(RenderObject(Image("/img/crouch.png"))),
+                Animation.withSingleRenderObject(RenderObject(Image("/img/crouch.png"))),
+                Animation.withSpeedAndImage(1000, Image("/img/move.png"), 40, 80, 6)
         )
         player.speed = 1.3
         player.jumpSpeed = 2.5
@@ -62,7 +63,7 @@ class Game(
         val rnd = Random()
         val count = (context.world.frame.size.width * context.world.frame.size.height * itemChance / (gridSquareSize * gridSquareSize)).toInt()
         var powerCount = count / 2
-//        player.MaxPower = powerCount
+        player.maxPower = powerCount
         val x = (context.world.frame.size.width / gridSquareSize - 2).toInt()
         val y = (context.world.frame.size.height / gridSquareSize - 2).toInt()
         var rndX: Int
@@ -73,8 +74,8 @@ class Game(
             var taken: Boolean
             do {
                 taken = false
-                rndX = rnd.nextInt() % x
-                rndY = rnd.nextInt() % y
+                rndX = rnd.nextInt(x)
+                rndY = rnd.nextInt(y)
                 for (j in 0..i) {
                     if (rndX == takenX[j] && rndY == takenY[j]) {
                         taken = true
@@ -99,11 +100,17 @@ class Game(
                 powerCount--
             } else {
                 val gameObject = Solid(context, rect)
-//                gameObject.renderObject = RenderObject(Properties.Resources.brick)
-                gameObject.renderObject = RenderObject.fromColor(Color.RED)
+                gameObject.renderObject = RenderObject(Image("/img/brick.png"))
                 context.world.addChild(gameObject)
             }
         }
+
+        //TODO: add Text UI elements
+
+        context.ui.healthBarHolder.renderObject = RenderObject.fromColor(Color.BLACK)
+        context.ui.healthBar.renderObject = RenderObject.fromColor(Color.RED)
+        context.ui.powerBarHolder.renderObject = RenderObject.fromColor(Color.BLACK)
+        context.ui.powerBar.renderObject = RenderObject.fromColor(Color.GREEN)
 
     }
 
@@ -116,28 +123,22 @@ class Game(
         keysPressed.remove(keyCode)
     }
 
-    fun tick(graphics: GraphicsContext, now: Long) {
-        //TODO: Quit
+    fun tick(ticks: Long, graphics: GraphicsContext) {
         if (context.quit) {
             exitHandler()
             return
         }
 
-        //TODO: Handle keyboard state
         context.world.handleKeyboardState(keysPressed)
 
-        //TODO?: clean
         context.world.clean()
 
-        //TODO: Process physics
         context.world.processPhysics()
 
-        //TODO: Detect collisions
         context.world.detectCollisions()
 
-        //TODO: Animate
+        context.world.animate(ticks)
 
-        //TODO: Render
         graphics.clearRect(0.0, 0.0, context.windowSize.width, context.windowSize.height)
         context.world.render(graphics)
         context.ui.render(graphics)
