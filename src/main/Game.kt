@@ -10,12 +10,15 @@ import main.gameObject.Player
 import main.gameObject.Solid
 import java.util.*
 
+private const val tickThreshold: Long = 10000000L
+
 class Game(
         size: Size,
         val exitHandler: () -> Unit
 ) {
     private val keysPressed: MutableSet<KeyCode> = HashSet()
     private val context: GameContext
+    private var lastTick = 0L
 
     init {
         val gameWidth = 400.0
@@ -124,6 +127,11 @@ class Game(
     }
 
     fun tick(ticks: Long, graphics: GraphicsContext) {
+        if (ticks - lastTick < tickThreshold) {
+            return
+        }
+        lastTick = ticks
+
         if (context.quit) {
             exitHandler()
             return
