@@ -4,6 +4,7 @@ import javafx.scene.canvas.GraphicsContext
 import javafx.scene.image.Image
 import javafx.scene.input.KeyCode
 import javafx.scene.paint.Color
+import javafx.scene.text.Font
 import main.gameObject.Consumable
 import main.gameObject.Frame
 import main.gameObject.Player
@@ -18,14 +19,11 @@ class Game(
     private val context: GameContext
 
     init {
-        val gameWidth = 400.0
-        val gameHeight = 300.0
         val gridSquareSize = 10.0
         val gravityForce = 0.1
         val itemChance = 0.16
 
         context = GameContext(size)
-        context.world.frame.size = Size(gameWidth, gameHeight)
 
         val player = Player(
                 context,
@@ -111,6 +109,14 @@ class Game(
         context.ui.healthBar.renderObject = RenderObject.fromColor(Color.RED)
         context.ui.powerBarHolder.renderObject = RenderObject.fromColor(Color.BLACK)
         context.ui.powerBar.renderObject = RenderObject.fromColor(Color.GREEN)
+        context.ui.deathText.text = "You died! Game Over!"
+        context.ui.deathText.font = Font(25.0)
+        context.ui.deathText.color = Color.RED
+        context.ui.deathText.visible = false
+        context.ui.winText.text = "Congratulations! You won!"
+        context.ui.winText.font = Font(25.0)
+        context.ui.winText.color = Color.GREEN
+        context.ui.winText.visible = false
 
     }
 
@@ -142,5 +148,11 @@ class Game(
         graphics.clearRect(0.0, 0.0, context.windowSize.width, context.windowSize.height)
         context.world.render(graphics)
         context.ui.render(graphics)
+    }
+
+    fun resize(size: Size) {
+        context.windowSize = size
+        context.world.onWindowResize(size)
+        context.ui.onWindowResize(size)
     }
 }

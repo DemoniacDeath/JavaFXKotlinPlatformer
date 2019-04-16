@@ -12,6 +12,17 @@ class Bar(context: GameContext, frame: Rect): Element(context, frame) {
         if (value < 0)  value = 0.0
         field = value
 
+        redrawValue()
+    }
+
+    override var frame: Rect = frame
+    set(value) {
+        field = value
+        originalFrame = Rect(center = value.center.copy(), size = value.size.copy())
+        redrawValue()
+    }
+
+    private fun redrawValue() {
         frame.center.x = originalFrame.center.x + originalFrame.size.width * ((value - 100) / 200)
         frame.size.width = originalFrame.size.width / 100 * value
     }

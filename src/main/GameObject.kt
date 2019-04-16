@@ -5,7 +5,7 @@ import javafx.scene.input.KeyCode
 
 abstract class GameObject(
         val context: GameContext,
-        var frame: Rect
+        open var frame: Rect
 ) {
     private val children: MutableList<GameObject> = ArrayList()
 
@@ -91,5 +91,9 @@ abstract class GameObject(
 
     fun globalPosition(): Vector {
         return frame.center + (parent?.globalPosition() ?: Vector())
+    }
+
+    open fun onWindowResize(newSize: Size) {
+        for (child in children) child.onWindowResize(newSize)
     }
 }

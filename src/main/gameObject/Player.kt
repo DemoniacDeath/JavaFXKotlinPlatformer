@@ -153,12 +153,12 @@ class Player (
 
     private fun die() {
         dead = true
-//        context.ui.deathText.visible = true
+        context.ui.deathText.visible = true
     }
 
     private fun win() {
         won = true
-//        context.ui.winText.visible = true
+        context.ui.winText.visible = true
     }
 
 
