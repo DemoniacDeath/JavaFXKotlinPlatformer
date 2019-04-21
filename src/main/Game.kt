@@ -106,8 +106,6 @@ class Game(
             }
         }
 
-        //TODO: add Text UI elements
-
         context.ui.healthBarHolder.renderObject = RenderObject.fromColor(Color.BLACK)
         context.ui.healthBar.renderObject = RenderObject.fromColor(Color.RED)
         context.ui.powerBarHolder.renderObject = RenderObject.fromColor(Color.BLACK)
