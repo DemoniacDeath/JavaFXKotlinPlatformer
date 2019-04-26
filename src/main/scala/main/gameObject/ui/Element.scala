@@ -4,4 +4,4 @@ import main.GameContext
 import main.Rect
 import main.GameObject
 
-open class Element(context: GameContext, frame: Rect) : GameObject(context, frame)
+class Element(context: GameContext, frame: Rect) extends GameObject(context, frame)
